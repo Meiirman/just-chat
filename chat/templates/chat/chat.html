@@ -78,7 +78,7 @@
         function connect() {
             if ("WebSocket" in window) {
                 // Устанавливаем WebSocket соединение
-                let chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + "room_{{ room_name }}/");
+                let chatSocket = new WebSocket("wss://" + window.location.host + "/ws/chat/" + "room_{{ room_name }}/");
 
                 // Обработчик события открытия соединения
                 chatSocket.onopen = function (event) {

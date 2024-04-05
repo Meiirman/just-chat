@@ -1,31 +1,31 @@
-asgiref==3.8.1
-async-timeout==4.0.3
-attrs==23.2.0
-autobahn==23.6.2
-Automat==22.10.0
-cffi==1.16.0
-channels==4.1.0
-channels-redis==4.2.0
-constantly==23.10.4
-cryptography==42.0.5
-daphne==4.1.0
-Django==5.0.4
-hyperlink==21.0.0
-idna==3.6
-incremental==22.10.0
-msgpack==1.0.8
-pillow==10.3.0
-pyasn1==0.6.0
-pyasn1_modules==0.4.0
-pycparser==2.22
-pyOpenSSL==24.1.0
-redis==5.0.3
-service-identity==24.1.0
-six==1.16.0
-sqlparse==0.4.4
-Twisted==24.3.0
-twisted-iocpsupport==1.0.4
-txaio==23.1.1
-typing_extensions==4.10.0
-tzdata==2024.1
-zope.interface==6.2
+pip install asgiref==3.8.1
+pip install async-timeout==4.0.3
+pip install attrs==23.2.0
+pip install autobahn==23.6.2
+pip install Automat==22.10.0
+pip install cffi==1.16.0
+pip install channels==4.1.0
+pip install channels-redis==4.2.0
+pip install constantly==23.10.4
+pip install cryptography==42.0.5
+pip install daphne==4.1.0
+pip install Django==5.0.4
+pip install hyperlink==21.0.0
+pip install idna==3.6
+pip install incremental==22.10.0
+pip install msgpack==1.0.8
+pip install pillow==10.3.0
+pip install pyasn1==0.6.0
+pip install pyasn1_modules==0.4.0
+pip install pycparser==2.22
+pip install pyOpenSSL==24.1.0
+pip install redis==5.0.3
+pip install service-identity==24.1.0
+pip install six==1.16.0
+pip install sqlparse==0.4.4
+pip install Twisted==24.3.0
+pip install twisted-iocpsupport==1.0.4
+pip install txaio==23.1.1
+pip install typing_extensions==4.10.0
+pip install tzdata==2024.1
+pip install zope.interface==6.2
