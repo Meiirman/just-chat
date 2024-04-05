@@ -150,6 +150,7 @@
             let usercolors = localStorage.getItem("usercolors");
             if (usercolors == undefined) {
                 usercolors = JSON.stringify({})
+            }
             let user_color = undefined
             try{
                 user_color = JSON.parse(usercolors)[data['nickname']]
