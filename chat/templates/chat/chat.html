@@ -41,6 +41,12 @@
     </div>
 
     <script>
+
+        function get_newDate(){
+            let date = new Date();
+            let yesr_moth_day = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+            return yesr_moth_day + ` ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+        }
         var audio = new Audio('/media/default/notification.mp3'); // Укажите путь к вашему звуковому файлу
         // Функция для отображения уведомления
         function showNotification(nickname, room_name, message) {
@@ -50,7 +56,7 @@
                 if (Notification.permission === 'granted') {
                     // Создаем уведомление
                     var notification = new Notification(`Новое сообщение в чате: ${room_name}`, {
-                        body: `[${new Date()}] ${nickname} : ${message}`,
+                        body: `[${get_newDate()}] ${nickname} : ${message}`,
                     });
 
                     // Дополнительные действия при клике на уведомление (необязательно)
@@ -63,7 +69,7 @@
                         if (permission === 'granted') {
                             // Создаем уведомление
                             var notification = new Notification(`Новое сообщение в чате: ${room_name}`, {
-                                body: `[${new Date()}] ${nickname} : ${message}`,
+                                body: `[${get_newDate()}] ${nickname} : ${message}`,
                             });
 
                             // Дополнительные действия при клике на уведомление (необязательно)
@@ -80,7 +86,7 @@
 
         function updateData(data) {
             document.getElementById("psevdo-chat").innerHTML = `
-            <p> [${new Date()}] ${data['nickname']} : ${data['message']} <p> <br>
+            <p> [${get_newDate()}] ${data['nickname']} : ${data['message']} <p> <br>
             ` + document.getElementById("psevdo-chat").innerHTML
             if (data['nickname'] != '{{nickname}}')
                 showNotification(data['nickname'], '{{room_name}}', data['message'])
