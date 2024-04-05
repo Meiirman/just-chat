@@ -213,6 +213,10 @@
                     </p>
                 </div>
             `
+
+            let height = document.getElementById("psevdo-chat").scrollHeight
+            document.getElementById("psevdo-chat").scrollTo(0, height);
+            
             if (data['nickname'] != '{{nickname}}')
                 showNotification(data['nickname'], '{{room_name}}', data['message'])
 
