@@ -190,12 +190,17 @@
                 usercolors = JSON.stringify({})
             }
 
-            let user_color = JSON.parse(usercolors)[data['nickname']]
+            let storage_user_colors = JSON.parse(usercolors)
 
-            if (user_color == undefined) user_color = default_usercolors[Math.floor(Math.random() * default_usercolors.length)]
+            let user_color = storage_user_colors[data['nickname']]
+
+            if (user_color == undefined) {
+                storage_user_colors[data['nickname']] = default_usercolors[Math.floor(Math.random() * default_usercolors.length)]
+                user_color = storage_user_colors[data['nickname']]
+            }
 
             usercolors[data['nickname']] = user_color
-            localStorage.setItem("usercolors", JSON.stringify(usercolors))
+            localStorage.setItem("usercolors", JSON.stringify(storage_user_colors))
 
             document.getElementById("psevdo-chat").innerHTML += `
 
