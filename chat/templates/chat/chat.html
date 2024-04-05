@@ -9,7 +9,13 @@
         .grid {
             width: 100%;
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-areas: "a a b";
+        }
+
+        @media screen and (max-width: 600px) {
+            .grid {
+                grid-template-areas: "b" "a";
+            }
         }
         </style>
 </head>
@@ -18,11 +24,10 @@
  width: 100vw; margin: 0;padding: 0;">
     <h3>Комната - {{room_name}}</h3>
     <div class="grid">
-        <div id="psevdo-chat">
-
+        <div id="psevdo-chat" style="grid-area: a;">
 
         </div>
-        <form>
+        <form style="grid-area: b;">
             <input type="text" name="" id="new_message">
             <button id="submitButton">Отправить</button>
 
