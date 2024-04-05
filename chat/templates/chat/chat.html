@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создай чат и зови друзей по сети</title>
+    <style>
+        .grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+        }
+        </style>
+</head>
+
+<body style="display: flex; flex-direction: column;
+ width: 100vw; margin: 0;padding: 0;">
+    <h3>Комната - {{room_name}}</h3>
+    <div class="grid">
+        <div id="psevdo-chat">
+
+
+        </div>
+        <form>
+            <input type="text" name="" id="new_message">
+            <button id="submitButton">Отправить</button>
+
+        </form>
+    </div>
+    
+    <script>
+        var audio = new Audio('/media/default/notification.mp3'); // Укажите путь к вашему звуковому файлу
+        // Функция для отображения уведомления
+        function showNotification(nickname, room_name, message) {
+            // Проверяем, поддерживает ли браузер уведомления Push
+            if ('Notification' in window) {
+                // Проверяем разрешение на отправку уведомлений
+                if (Notification.permission === 'granted') {
+                    // Создаем уведомление
+                    var notification = new Notification(`Новое сообщение в чате: ${room_name}`, {
+                        body: `[${new Date()}] ${nickname} : ${message}`,
+                    });
+
+                    // Дополнительные действия при клике на уведомление (необязательно)
+                    notification.onclick = function () {
+                        console.log('Уведомление было кликнуто');
+                    };
+                } else if (Notification.permission !== 'denied') {
+                    // Запрашиваем разрешение на отправку уведомлений, если оно еще не установлено
+                    Notification.requestPermission().then(function (permission) {
+                        if (permission === 'granted') {
+                            // Создаем уведомление
+                            var notification = new Notification(`Новое сообщение в чате: ${room_name}`, {
+                                body: `[${new Date()}] ${nickname} : ${message}`,
+                            });
+
+                            // Дополнительные действия при клике на уведомление (необязательно)
+                            notification.onclick = function () {
+                                console.log('Уведомление было кликнуто');
+                            };
+                        }
+                    });
+                }
+            } else {
+                console.log('Уведомления Push не поддерживаются в этом браузере.');
+            }
+        }
+
+        function updateData(data) {
+            document.getElementById("psevdo-chat").innerHTML += `
+            <p> [${new Date()}] ${data['nickname']} : ${data['message']} <p> <br>
+            `
+            if (data['nickname'] != '{{nickname}}')
+            showNotification(data['nickname'], '{{room_name}}', data['message'])
+
+        }
+        function connect() {
+            if ("WebSocket" in window) {
+                // Устанавливаем WebSocket соединение
+                let chatSocket = new WebSocket("ws://" + window.location.host + "/ws/chat/" + "room_{{ room_name }}/");
+
+                // Обработчик события открытия соединения
+                chatSocket.onopen = function (event) {
+                    console.log("Successfully connected to the WebSocket.");
+                }
+
+                // Обработчик события получения сообщения от сервера
+                chatSocket.onmessage = function (event) {
+                    const data = JSON.parse(event.data);
+                    console.log('Received data:', data);
+
+                    // Добавьте логику для отображения данных на странице
+                    console.log("data в функции connect", data)
+                    if (data['nickname'] != '{{nickname}}') audio.play();
+                    updateData(data)
+                }
+
+                // Обработчик события закрытия соединения
+                chatSocket.onclose = function (event) {
+                    console.log("WebSocket connection closed unexpectedly. Trying to reconnect in 2s...");
+                    setTimeout(function () {
+                        console.log("Reconnecting...");
+                        connect()
+                    }, 2000);
+                }
+
+                function sendData(new_message) {
+                    if (chatSocket.readyState === WebSocket.OPEN) {
+                        data = {
+                            'message': new_message,
+                            'nickname': '{{ nickname }}'
+                        }
+                        chatSocket.send(JSON.stringify(data));
+
+                        // Добавьте логику для отображения данных на странице
+
+                    } else {
+                        console.error('WebSocket connection is not open.');
+                    }
+                }
+            } else {
+                console.error("WebSocket is not supported by your browser.");
+            }
+            document.getElementById("submitButton").addEventListener("click", function (event) {
+                event.preventDefault(); //
+                let new_message = document.getElementById("new_message").value
+                if (new_message != "") sendData(new_message)
+                document.getElementById("new_message").value = ""
+                
+            });
+        }
+
+        connect()
+
+    </script>
+</body>
+
+</html>

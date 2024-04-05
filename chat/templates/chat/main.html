@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подключение к чату</title>
+</head>
+
+<body>
+    <form id="connect_form">
+        <label for="nickname">Ваше имя:</label>
+        <input type="text" name="nickname" id="nickname" required>
+
+        <label for="room_name">Название комнаты:</label>
+        <input type="text" name="room_name" id="room_name" pattern="[A-Za-z][A-Za-z0-9]{5,14}" title="Только латинские буквы, начиная с буквы, и длиной от 6 до 15 символов" required>
+
+        <button id="submitButton">Подключиться</button>
+    </form>
+
+
+    <script>
+
+        document.getElementById("submitButton").addEventListener("click", function (event) {
+            event.preventDefault(); //
+            let nickname = document.getElementById("nickname").value
+            let room_name = document.getElementById("room_name").value
+            location.href = "/chat/anon-chat/" + room_name + "/" + nickname
+        });
+
+    </script>
+</body>
+
+</html>
