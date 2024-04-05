@@ -3,37 +3,36 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Создай чат и зови друзей по сети</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
         .grid {
             width: 100%;
             display: grid;
-            grid-template-areas: "a a b";
+            grid-template-columns: 1f;
         }
-
-        @media screen and (max-width: 600px) {
-            .grid {
-                grid-template-areas: "b" "a";
-            }
-        }
-        </style>
+    </style>
 </head>
 
 <body style="display: flex; flex-direction: column;
  width: 100vw; margin: 0;padding: 0;">
     <h3>Комната - {{room_name}}</h3>
     <div class="grid">
-        <div id="psevdo-chat" style="grid-area: a;">
-
-        </div>
-        <form style="grid-area: b;">
+        <form >
             <input type="text" name="" id="new_message">
             <button id="submitButton">Отправить</button>
-
         </form>
+        <div id="psevdo-chat" >
+
+        </div>
+
     </div>
-    
+
     <script>
         var audio = new Audio('/media/default/notification.mp3'); // Укажите путь к вашему звуковому файлу
         // Функция для отображения уведомления
@@ -77,7 +76,7 @@
             <p> [${new Date()}] ${data['nickname']} : ${data['message']} <p> <br>
             ` + document.getElementById("psevdo-chat").innerHTML
             if (data['nickname'] != '{{nickname}}')
-            showNotification(data['nickname'], '{{room_name}}', data['message'])
+                showNotification(data['nickname'], '{{room_name}}', data['message'])
 
         }
         function connect() {
@@ -132,7 +131,7 @@
                 let new_message = document.getElementById("new_message").value
                 if (new_message != "") sendData(new_message)
                 document.getElementById("new_message").value = ""
-                
+
             });
         }
 
