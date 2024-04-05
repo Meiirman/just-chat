@@ -68,9 +68,9 @@
         }
 
         function updateData(data) {
-            document.getElementById("psevdo-chat").innerHTML += `
+            document.getElementById("psevdo-chat").innerHTML = `
             <p> [${new Date()}] ${data['nickname']} : ${data['message']} <p> <br>
-            `
+            ` + document.getElementById("psevdo-chat").innerHTML
             if (data['nickname'] != '{{nickname}}')
             showNotification(data['nickname'], '{{room_name}}', data['message'])
 
