@@ -1,78 +1,76 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Создай чат и зови друзей по сети</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-        }
+    <title>CodePen - Daily UI #013: Direct Messaging</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+    <link rel='stylesheet'
+        href='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.min.css'>
+    <link rel="stylesheet" href="{% static 'css.css' %}">
 
-        .grid {
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1f;
-        }
-
-        #psevdo-chat{
-            width: 100%;
-            height: 80vh;
-            overflow-y: scroll;
-            border: 1px solid black;
-        }
-    </style>
 </head>
 
-<body style="display: flex; flex-direction: column;
- width: 100vw; margin: 0;padding: 0;">
-    <h3>Комната - {{room_name}}</h3>
-    <div class="grid">
-        <form >
-            <input type="text" name="" id="new_message">
-            <button id="submitButton">Отправить</button>
-        </form>
-        <div id="psevdo-chat" >
+<body>
+    <!-- partial:index.partial.html -->
+    <!--
 
+Follow me on
+Dribbble: https://dribbble.com/supahfunk
+Twitter: https://twitter.com/supahfunk
+Codepen: https://codepen.io/supah/
+
+It's just a concept, a fake chat to design a new daily UI for direct messaging.
+Hope you like it :)
+
+-->
+
+    <div class="chat">
+        <div class="chat-title">
+            <h1>{{room_name}}</h1>
+            <h2>{{nickname}}</h2>
         </div>
+        <div class="messages">
+            <div class="messages-content" id="psevdo-chat"></div>
+        </div>
+        <form class="message-box">
+            <textarea type="text" id="new_message" class="message-input" placeholder="Type message..."></textarea>
+            <button type="submit" id="submitButton" class="message-submit">Send</button>
+    </div>
 
     </div>
+    <div class="bg"></div>
+    <!-- partial -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script
+        src='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js'></script>
+    <script src="{% static 'js.js' %}"></script>
 
     <script>
 
-        function get_newDate(){
+        function get_newDate() {
             let date = new Date();
-            let yesr_moth_day = `${(date.getDate() > 10)? date.getDate() : +'0' + date.getDate()}.${(date.getMonth()+1 > 10)? date.getMonth()+1 : '0'+(date.getMonth()+1)}.${date.getFullYear()}` // `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
-            return yesr_moth_day + ` ${(date.getHours() > 10 )? date.getHours() : '0'+date.getHours()}:${(date.getMinutes() > 10)? date.getMinutes() : '0'+date.getMinutes()}`
+            let yesr_moth_day = `${(date.getDate() > 10) ? date.getDate() : +'0' + date.getDate()}.${(date.getMonth() + 1 > 10) ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)}.${date.getFullYear()}` // `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+            return yesr_moth_day + ` ${(date.getHours() > 10) ? date.getHours() : '0' + date.getHours()}:${(date.getMinutes() > 10) ? date.getMinutes() : '0' + date.getMinutes()}`
         }
         var audio = new Audio('/media/default/notification.mp3'); // Укажите путь к вашему звуковому файлу
-        // Функция для отображения уведомления
         function showNotification(nickname, room_name, message) {
-            // Проверяем, поддерживает ли браузер уведомления Push
             if ('Notification' in window) {
-                // Проверяем разрешение на отправку уведомлений
                 if (Notification.permission === 'granted') {
-                    // Создаем уведомление
                     var notification = new Notification(`Новое сообщение в чате: ${room_name}`, {
                         body: `[${get_newDate()}] ${nickname} : ${message}`,
                     });
-
-                    // Дополнительные действия при клике на уведомление (необязательно)
                     notification.onclick = function () {
                         console.log('Уведомление было кликнуто');
                     };
                 } else if (Notification.permission !== 'denied') {
-                    // Запрашиваем разрешение на отправку уведомлений, если оно еще не установлено
                     Notification.requestPermission().then(function (permission) {
                         if (permission === 'granted') {
-                            // Создаем уведомление
                             var notification = new Notification(`Новое сообщение в чате: ${room_name}`, {
                                 body: `[${get_newDate()}] ${nickname} : ${message}`,
                             });
-
-                            // Дополнительные действия при клике на уведомление (необязательно)
                             notification.onclick = function () {
                                 console.log('Уведомление было кликнуто');
                             };
@@ -84,6 +82,7 @@
             }
         }
 
+
         function updateData(data) {
             document.getElementById("psevdo-chat").innerHTML = `
             <p> [${get_newDate()}] ${data['nickname']} : ${data['message']} <p> <br>
@@ -94,26 +93,17 @@
         }
         function connect() {
             if ("WebSocket" in window) {
-                // Устанавливаем WebSocket соединение
                 let chatSocket = new WebSocket("wss://" + window.location.host + "/ws/chat/" + "room_{{ room_name }}/");
-
-                // Обработчик события открытия соединения
                 chatSocket.onopen = function (event) {
                     console.log("Successfully connected to the WebSocket.");
                 }
-
-                // Обработчик события получения сообщения от сервера
                 chatSocket.onmessage = function (event) {
                     const data = JSON.parse(event.data);
                     console.log('Received data:', data);
-
-                    // Добавьте логику для отображения данных на странице
                     console.log("data в функции connect", data)
                     if (data['nickname'] != '{{nickname}}') audio.play();
                     updateData(data)
                 }
-
-                // Обработчик события закрытия соединения
                 chatSocket.onclose = function (event) {
                     console.log("WebSocket connection closed unexpectedly. Trying to reconnect in 2s...");
                     setTimeout(function () {
@@ -121,7 +111,6 @@
                         connect()
                     }, 2000);
                 }
-
                 function sendData(new_message) {
                     if (chatSocket.readyState === WebSocket.OPEN) {
                         data = {
@@ -129,9 +118,6 @@
                             'nickname': '{{ nickname }}'
                         }
                         chatSocket.send(JSON.stringify(data));
-
-                        // Добавьте логику для отображения данных на странице
-
                     } else {
                         console.error('WebSocket connection is not open.');
                     }
@@ -151,6 +137,8 @@
         connect()
 
     </script>
+
 </body>
 
 </html>
+
