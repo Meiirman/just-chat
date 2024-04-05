@@ -45,7 +45,7 @@
         function get_newDate(){
             let date = new Date();
             let yesr_moth_day = `${(date.getDate() > 10)? date.getDate() : +'0' + date.getDate()}.${(date.getMonth()+1 > 10)? date.getMonth()+1 : '0'+(date.getMonth()+1)}.${date.getFullYear()}` // `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
-            return yesr_moth_day + ` ${(date.getHours() > 10 )? date.getHours() : '0'+date.getHours()}:${(date.getMinutes() > 10)? date.getMinutes() : '0'+date.getMinutes()}`}`
+            return yesr_moth_day + ` ${(date.getHours() > 10 )? date.getHours() : '0'+date.getHours()}:${(date.getMinutes() > 10)? date.getMinutes() : '0'+date.getMinutes()}`
         }
         var audio = new Audio('/media/default/notification.mp3'); // Укажите путь к вашему звуковому файлу
         // Функция для отображения уведомления
