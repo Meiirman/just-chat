@@ -146,19 +146,18 @@
             ] 
 
             // get random color
-            let color = default_usercolors[Math.floor(Math.random() * default_usercolors.length)]
             let usercolors = localStorage.getItem("usercolors");
+
             if (usercolors == undefined) {
                 usercolors = JSON.stringify({})
             }
-            let user_color = undefined
-            try{
-                user_color = JSON.parse(usercolors)[data['nickname']]
-            }catch(e){
-                user_color = color
-                usercolors[data['nickname']] = color
-                localStorage.setItem("usercolors", JSON.stringify(usercolors))
-            }
+            
+            let user_color = JSON.parse(usercolors)[data['nickname']]
+
+            if (user_color == undefined) user_color = default_usercolors[Math.floor(Math.random() * default_usercolors.length)]
+
+            usercolors[data['nickname']] = user_color
+            localStorage.setItem("usercolors", JSON.stringify(usercolors))
             
             document.getElementById("psevdo-chat").innerHTML += `
 
