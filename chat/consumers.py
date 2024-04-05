@@ -15,6 +15,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
         # Принимаем подключение
         await self.accept()
+        
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                'type': 'chat_message',
+                'message': "подключился новый участник",
+                "nickname": "уведомление чата"
+            }
+        )
 
     async def disconnect(self, close_code):
         # Отключаемся от комнаты
